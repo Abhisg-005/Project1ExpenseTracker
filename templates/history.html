@@ -21,7 +21,7 @@
 <section class="mb-4">
   <div class="day-summary">
     <span>{{ selected_date }}</span>
-    <strong>₹{{ '%.2f'|format(total) }}</strong>
+    <strong class="total-amount">₹{{ '%.2f'|format(total) }}</strong>
   </div>
 
   {% if expenses %}

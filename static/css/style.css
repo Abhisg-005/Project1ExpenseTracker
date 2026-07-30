@@ -74,6 +74,10 @@ a {
   font-weight: 600;
 }
 
+.nav-links .logout-link {
+  color: #dc3545;
+}
+
 .auth-wrap {
   padding-top: 3rem;
 }
@@ -183,6 +187,7 @@ a {
   gap: 0.75rem;
   padding: 0.9rem 0;
   border-bottom: 1px solid var(--line);
+  
 }
 
 .expense-main {
@@ -199,6 +204,12 @@ a {
 
 .expense-amount {
   font-size: 1.1rem;
+  font-weight: 700;
+  color: #16a34a;
+}
+
+.total-amount {
+  color: #16a34a;
   font-weight: 700;
 }
 

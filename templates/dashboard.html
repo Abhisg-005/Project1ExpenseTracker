@@ -3,7 +3,7 @@
 {% block content %}
 <section class="page-header">
   <h1>Today</h1>
-  <p class="meta">{{ today }} · Total <strong>₹{{ '%.2f'|format(total_today) }}</strong></p>
+  <p class="meta">{{ today }} · Total <strong class="total-amount">₹{{ '%.2f'|format(total_today) }}</strong></p>
 </section>
 
 <section class="add-panel mb-4">
