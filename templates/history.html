@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}History · Expense Tracker{% endblock %}
+{% block content %}
+<section class="page-header">
+  <h1>History</h1>
+  <p class="meta">View spending by day</p>
+</section>
+
+<section class="add-panel mb-4">
+  <form method="get" class="row g-2 align-items-end">
+    <div class="col-8">
+      <label for="date" class="form-label">Pick a date</label>
+      <input type="date" class="form-control form-control-lg" id="date" name="date" value="{{ selected_date }}">
+    </div>
+    <div class="col-4">
+      <button type="submit" class="btn btn-dark btn-lg w-100">View</button>
+    </div>
+  </form>
+</section>
+
+<section class="mb-4">
+  <div class="day-summary">
+    <span>{{ selected_date }}</span>
+    <strong>₹{{ '%.2f'|format(total) }}</strong>
+  </div>
+
+  {% if expenses %}
+  <ul class="expense-list mt-3">
+    {% for e in expenses %}
+    <li class="expense-item">
+      <div class="expense-main">
+        <div class="expense-top">
+          <span class="expense-amount">₹{{ '%.2f'|format(e.amount|float) }}</span>
+          <span class="expense-cat">{{ e.category }}</span>
+        </div>
+        {% if e.description %}
+        <p class="expense-note">{{ e.description }}</p>
+        {% endif %}
+      </div>
+      <form method="post" action="{{ url_for('delete_expense', expense_id=e.id) }}" class="delete-form">
+        <input type="hidden" name="next" value="history">
+        <input type="hidden" name="date" value="{{ selected_date }}">
+        <button type="submit" class="btn-delete" aria-label="Delete" onclick="return confirm('Delete this expense?')">×</button>
+      </form>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="empty-state">No expenses on this date.</p>
+  {% endif %}
+</section>
+
+{% if day_totals %}
+<section>
+  <h2 class="section-title">Recent Days</h2>
+  <ul class="day-list">
+    {% for d in day_totals %}
+    <li>
+      <a href="{{ url_for('history', date=d.expense_date.isoformat()) }}"
+         class="day-row {% if d.expense_date.isoformat() == selected_date %}active{% endif %}">
+        <span>
+          <strong>{{ d.expense_date.strftime('%d %b %Y') }}</strong>
+          <small>{{ d.item_count }} item{{ 's' if d.item_count != 1 else '' }}</small>
+        </span>
+        <span class="day-total">₹{{ '%.2f'|format(d.day_total|float) }}</span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endblock %}

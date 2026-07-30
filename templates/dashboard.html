@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Today · Expense Tracker{% endblock %}
+{% block content %}
+<section class="page-header">
+  <h1>Today</h1>
+  <p class="meta">{{ today }} · Total <strong>₹{{ '%.2f'|format(total_today) }}</strong></p>
+</section>
+
+<section class="add-panel mb-4">
+  <h2 class="section-title">Add Expense</h2>
+  <form method="post" id="expense-form" novalidate>
+    <div class="row g-2">
+      <div class="col-6">
+        <label for="amount" class="form-label">Amount</label>
+        <input type="number" step="0.01" min="0.01" class="form-control form-control-lg"
+               id="amount" name="amount" placeholder="0.00" required autofocus>
+      </div>
+      <div class="col-6">
+        <label for="category" class="form-label">Category</label>
+        <select class="form-select form-select-lg" id="category" name="category" required>
+          {% for cat in categories %}
+          <option value="{{ cat }}">{{ cat }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-12">
+        <label for="description" class="form-label">Note <span class="text-muted">(optional)</span></label>
+        <input type="text" class="form-control" id="description" name="description"
+               maxlength="255" placeholder="What did you spend on?">
+      </div>
+      <div class="col-12">
+        <label for="expense_date" class="form-label">Date</label>
+        <input type="date" class="form-control" id="expense_date" name="expense_date" value="{{ today }}">
+      </div>
+      <div class="col-12 mt-2">
+        <button type="submit" class="btn btn-dark btn-lg w-100">Save Expense</button>
+      </div>
+    </div>
+  </form>
+</section>
+
+<section>
+  <h2 class="section-title">Today's List</h2>
+  {% if expenses %}
+  <ul class="expense-list">
+    {% for e in expenses %}
+    <li class="expense-item">
+      <div class="expense-main">
+        <div class="expense-top">
+          <span class="expense-amount">₹{{ '%.2f'|format(e.amount|float) }}</span>
+          <span class="expense-cat">{{ e.category }}</span>
+        </div>
+        {% if e.description %}
+        <p class="expense-note">{{ e.description }}</p>
+        {% endif %}
+      </div>
+      <form method="post" action="{{ url_for('delete_expense', expense_id=e.id) }}" class="delete-form">
+        <input type="hidden" name="next" value="dashboard">
+        <button type="submit" class="btn-delete" aria-label="Delete" onclick="return confirm('Delete this expense?')">×</button>
+      </form>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="empty-state">No expenses yet today. Add one above.</p>
+  {% endif %}
+</section>
+{% endblock %}

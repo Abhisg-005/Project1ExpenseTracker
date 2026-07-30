@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Register · Expense Tracker{% endblock %}
+{% block content %}
+<section class="auth-wrap">
+  <h1 class="auth-title">Create Account</h1>
+  <p class="auth-sub">Use your mobile number to sign up.</p>
+
+  <form method="post" class="auth-form" novalidate>
+    <div class="mb-3">
+      <label for="mobile_no" class="form-label">Mobile Number</label>
+      <input type="tel" class="form-control form-control-lg" id="mobile_no" name="mobile_no"
+             inputmode="numeric" pattern="[0-9]*" placeholder="10-digit mobile" required autofocus>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control form-control-lg" id="password" name="password"
+             placeholder="At least 4 characters" required>
+    </div>
+    <div class="mb-4">
+      <label for="confirm_password" class="form-label">Confirm Password</label>
+      <input type="password" class="form-control form-control-lg" id="confirm_password"
+             name="confirm_password" placeholder="Re-enter password" required>
+    </div>
+    <button type="submit" class="btn btn-dark btn-lg w-100">Register</button>
+  </form>
+
+  <p class="text-center mt-4 mb-0 auth-switch">
+    Already have an account? <a href="{{ url_for('login') }}">Log in</a>
+  </p>
+</section>
+{% endblock %}
